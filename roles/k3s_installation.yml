@@ -1,0 +1,9 @@
+# k3s_installation.yml
+---
+- name: Install k3s on a specific host
+  hosts: localhost
+  connection: local
+  become: yes
+  roles:
+    - k3s
+

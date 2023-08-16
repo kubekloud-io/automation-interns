@@ -1,0 +1,8 @@
+
+# handlers file for /etc/ansible/roles/k3s
+---
+- name: Restart k3s
+  service:
+    name: k3s
+    state: restarted
+    

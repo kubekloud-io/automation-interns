@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Uninstall dpkg-dev package
+      apt:
+        name: dpkg-dev
+        state: absent
+    # ensure that the specified package is no longer installed on the target system
+    # if present : nsure that the specified package is installed on the target system

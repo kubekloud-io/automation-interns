@@ -1,0 +1,18 @@
+---
+- name: Install kubearmor on k3s via Helm
+  hosts: localhost
+  tasks:
+    - name: Install Helm chart repository
+      command: >
+        helm repo add kubearmor https://kubearmor.github.io/charts
+      ignore_errors: yes
+
+    - name: Update Helm repositories
+      command: helm repo update
+
+    - name: Install kubearmor Helm chart
+      command: >
+        helm upgrade --install kubearmor kubearmor/kubearmor --wait --timeout 18000s
+      environment:
+        KUBECONFIG: /home/da/.kube/config
+

@@ -4,10 +4,10 @@
   tasks:
     - name: Download dpkg-dev package
       get_url:
-        url: "http://archive.ubuntu.com/ubuntu/pool/main/d/dpkg/dpkg-dev_1.19.7ubuntu3.2_all.deb"
-        dest: "/tmp/dpkg-dev_1.19.7ubuntu3.2_all.deb"
+        url: "http://archive.ubuntu.com/ubuntu/pool/main/d/dpkg/dpkg-dev_1.21.1ubuntu2.2_all.deb"
+        dest: "/tmp/dpkg-dev_1.21.1ubuntu2.2_all.deb"
 
     - name: Install dpkg-dev package
       apt:
-        deb: "/tmp/dpkg-dev_1.19.7ubuntu3.2_all.deb"
+        deb: "/tmp/dpkg-dev_1.21.1ubuntu2.2_all.deb"
         state: present

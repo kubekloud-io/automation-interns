@@ -1,0 +1,11 @@
+- name: Uninstall Nginx from localhost
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Uninstall Nginx
+      apt:
+        name: nginx
+        state: absent
+# ensure a specific package is installed on the target system

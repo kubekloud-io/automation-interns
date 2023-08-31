@@ -1,0 +1,5 @@
+
+# vars file for /etc/ansible/roles/k3s
+---
+ k3s_version: "1.21.3"
+

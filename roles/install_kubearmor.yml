@@ -1,0 +1,46 @@
+- name: Check if kubearmor is running
+  hosts: localhost
+  gather_facts: false
+  # Ansible will not collect information about the remote hosts before executing the tasks
+
+  vars:
+    kubearmor_version: "0.10.2"
+
+  tasks:
+    - become: yes
+      name: Check kubearmor service status
+      shell: "systemctl is-active kubearmor"
+      register: kubearmor_service_status
+      ignore_errors: yes
+      # option used to continue execution even there is a fail
+
+    - become: yes
+      name: Create a directory for kubearmor
+      file:
+        path: /opt/kubearmor
+        state: directory
+      when: kubearmor_service_status.rc != 0  # install only if the service is not running
+
+    - become: yes
+      name: Download kubearmor .deb package
+      become: yes
+      get_url:
+        url: "https://github.com/kubearmor/KubeArmor/releases/download/v{{kubearmor_version}}/kubearmor_{{kubearmor_version}}_linux-amd64.deb"
+        dest: /tmp/kubearmor_{{kubearmor_version}}_linux-amd64.deb
+      when: kubearmor_service_status.rc != 0  # install only if the service is not running
+      
+    - become: yes
+      name: Install kubearmor
+      apt:
+        deb: /tmp/kubearmor_{{kubearmor_version}}_linux-amd64.deb
+      when: kubearmor_service_status.rc != 0  # install only if the service is not running
+
+    - become: yes
+      name: Add kubearmor to PATH
+      lineinfile:
+        path: ~/.bashrc
+        line: 'export PATH=$PATH:/opt/kubearmor'
+        state: present
+        # ensure the line is present in the file
+        create: no
+        # ensures that the task does not create new files when it is not intended to do

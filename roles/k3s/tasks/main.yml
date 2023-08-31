@@ -1,0 +1,23 @@
+
+# tasks file for /etc/ansible/roles/k3s
+
+---
+- name: Install required packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - curl
+    - iptables
+
+- name: Download and install k3s
+  become: yes
+  shell: "curl -sfL https://get.k3s.io | sh -s - --version v1.21.3+k3s1"
+- name: Copy k3s kubectl config to user's home directory
+  become: yes
+  copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    remote_src: yes
+  when: ansible_env.HOME is defined
